@@ -6,17 +6,27 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Questions from "./Questions";
+import Dashboard from "./Dashboard";
+import "../index.css";
+import logo from "../assets/logo.png";
+import help_button from "../assets/help-circle-outline.png";
+import settings_button from "../assets/cog-outline.png";
+import dashboard_button from "../assets/view-dashboard-variant.png";
+import chart_button from "../assets/chart-line-variant.png";
+import friend_button from "../assets/account-multiple.png";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
     <Typography
+      className="tab-panel"
       component="div"
       role="tabpanel"
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
+      width={"100%"}
       {...other}
     >
       {value === index && <Box p={3}>{children}</Box>}
@@ -33,28 +43,35 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
-    "aria-controls": `vertical-tabpanel-${index}`
+    "aria-controls": `vertical-tabpanel-${index}`,
+    color: "white"
   };
 }
 
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
+    minWidth: "100px",
     display: "flex",
-    height: "100%"
+    height: "100%",
+    width: "100%",
+    color: "white"
   },
   tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`
+    borderRight: `1px solid ${theme.palette.divider}`,
+    backgroundColor: "#76838D"
   }
 }));
 
 export default function VerticalTabs() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  // Look into Mini variant drawer
 
   return (
     <div className={classes.root}>
@@ -63,26 +80,110 @@ export default function VerticalTabs() {
         value={value}
         onChange={handleChange}
         className={classes.tabs}
+        height="auto"
       >
-        <Tab label="Home" {...a11yProps(0)} />
-        <Tab label="My Questions" {...a11yProps(1)} />
-        <Tab label="My Statistics" {...a11yProps(2)} />
-        <Tab label="Friends" {...a11yProps(3)} />
-        <Tab label="Account Settings" {...a11yProps(4)} />
+        <div className="image">
+          <img
+            className="img"
+            src={logo}
+            onClick={() => setValue(1)}
+            alt="Logo"
+          />
+        </div>
+        <Tab
+          label={
+            <div style={{ display: "flex", width: "100%" }}>
+              <div
+                style={{
+                  marginLeft: "20%",
+                  marginRight: "5px"
+                }}
+              >
+                <img src={dashboard_button} alt="Dashboard_Button" />
+              </div>
+              <div>Dashboard</div>
+            </div>
+          }
+          {...a11yProps(1)}
+        />
+        <Tab
+          label={
+            <div style={{ display: "flex", width: "100%" }}>
+              <div
+                style={{
+                  marginLeft: "20%",
+                  marginRight: "5px"
+                }}
+              >
+                <img src={help_button} alt="Help_Button" />
+              </div>
+              <div>Questions</div>
+            </div>
+          }
+          {...a11yProps(2)}
+        />
+        <Tab
+          label={
+            <div style={{ display: "flex", width: "100%" }}>
+              <div
+                style={{
+                  marginLeft: "20%",
+                  marginRight: "5px"
+                }}
+              >
+                <img src={chart_button} alt="Chart_Button" />
+              </div>
+              <div>Statistics</div>
+            </div>
+          }
+          {...a11yProps(3)}
+        />
+        <Tab
+          label={
+            <div style={{ display: "flex", width: "100%" }}>
+              <div
+                style={{
+                  marginLeft: "20%",
+                  marginRight: "5px"
+                }}
+              >
+                <img src={friend_button} alt="Friend_Button" />
+              </div>
+              <div>Friends</div>
+            </div>
+          }
+          {...a11yProps(4)}
+        />
+        <Tab
+          label={
+            <div style={{ display: "flex", width: "100%" }}>
+              <div
+                style={{
+                  marginLeft: "20%",
+                  marginRight: "5px"
+                }}
+              >
+                <img src={settings_button} alt="Account_Button" />
+              </div>
+              <div>Account</div>
+            </div>
+          }
+          {...a11yProps(5)}
+        />
       </Tabs>
-      <TabPanel value={value} index={0}>
-        Home
-      </TabPanel>
       <TabPanel value={value} index={1}>
-        <Questions />
+        <Dashboard />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        My Statistics
+        <Questions />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Friends
+        My Statistics
       </TabPanel>
       <TabPanel value={value} index={4}>
+        Friends
+      </TabPanel>
+      <TabPanel value={value} index={5}>
         Account Settings
       </TabPanel>
     </div>
