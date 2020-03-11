@@ -80,7 +80,6 @@ export default function VerticalTabs() {
         value={value}
         onChange={handleChange}
         className={classes.tabs}
-        height="auto"
       >
         <div className="image">
           <img

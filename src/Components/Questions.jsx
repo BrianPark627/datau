@@ -11,24 +11,24 @@ class Question extends Component {
       columns: {}
     };
   }
-
   render() {
     return (
       <div className="questions">
-        <Button>+</Button>
+        <Button>+ Add New</Button>
         <div style={{ maxWidth: "100%" }}>
           <MaterialTable
             options={{
               paging: false,
               search: false,
               showTitle: false,
-              minBodyHeight: "100%",
+              minBodyHeight: "1000px",
               showSelectAllCheckbox: true,
               draggable: false,
               selection: true,
               header: false,
               headerStyle: { padding: "10px" },
               toolbar: false
+              // padding: "100px"
             }}
             columns={[
               { title: "Adı", field: "name" },
@@ -42,13 +42,13 @@ class Question extends Component {
             ]}
             data={[
               {
-                name: "Mehmet",
+                name: "question 1",
                 surname: "Baran",
                 birthYear: 1987,
                 birthCity: 63
               },
               {
-                name: "Mehmet",
+                name: "question 2",
                 surname: "Baran",
                 birthYear: 1987,
                 birthCity: 63
