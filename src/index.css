@@ -27,6 +27,7 @@ div#root {
 .tab-panel {
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 
 .MuiTableSortLabel-icon {
@@ -52,13 +53,6 @@ div#root {
 .wrapper {
   height: 100%;
 }
-.container {
-  width: calc(100% / 7);
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  float: left;
-}
 
 .MuiTabs-vertical {
   width: 15%;
@@ -66,50 +60,30 @@ div#root {
   overflow-y: true;
 }
 
-/*Login DataU image */
-/* .image {
-  /* text-align: center; */
-  
-
-  /* margin-top: 50px;
-  margin-bottom: 50px; */
-
-
+.image {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
 
 .img {
   max-width: 50%;
   height: auto;
-  
 }
 
 img:hover {
   cursor: pointer;
 }
 
-
-
 .login {
-  /* position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
+  margin: auto;
   text-align: center;
-  font-size: 18px; */
-    
-  
-  
-   /* position: absolute; */
-     margin: auto;
-     text-align: center;
-     top: 0;
-     right: 0;
-     bottom: 0;
-     left: 0;
-     width: 200px;
-     height: 100px; 
-     
-     
-  
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  height: 100px;
 }
 
 .button {
