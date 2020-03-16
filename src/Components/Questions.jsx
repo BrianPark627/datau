@@ -14,14 +14,14 @@ class Question extends Component {
   render() {
     return (
       <div className="questions">
-        <Button>+ Add New</Button>
-        <div style={{ maxWidth: "100%" }}>
+        <Button>New</Button>
+        <div style={{ maxWidth: "100%", marginTop: "30px" }}>
           <MaterialTable
             options={{
               paging: false,
               search: false,
               showTitle: false,
-              minBodyHeight: "1000px",
+              minBodyHeight: "500px",
               showSelectAllCheckbox: true,
               draggable: false,
               selection: true,

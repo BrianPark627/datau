@@ -28,7 +28,10 @@ export default function Dashboard() {
             <div>Good Evening, Brian</div>
           </Paper>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={4}>
+          <Paper className={classes.paper}>My Questions</Paper>
+        </Grid>
+        <Grid item xs={12} sm={8}>
           <Paper className={classes.paper}>
             <HighchartsReact
               highcharts={Highcharts}
