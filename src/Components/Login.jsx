@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
-// import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
 import logo from "../assets/logo.png";
 import * as ROUTES from "../constants/routes";
 import { withFirebase } from "./Firebase";
+import { withRouter, Link } from "react-router-dom";
+import { compose } from "recompose";
 
 const Login = () => (
-  <div>
+  <Paper
+    className="login-container"
+    style={{ backgroundColor: "#76838d" }}
+    elevation="12"
+  >
     <LoginFormBase />
-  </div>
+  </Paper>
 );
 
 const INITIAL_STATE = {
@@ -22,9 +28,6 @@ class LoginForm extends Component {
     super(props);
 
     this.state = { ...INITIAL_STATE };
-
-    // this.handleSubmit = this.handleSubmit.bind(this);
-    // this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange = event => {
@@ -36,7 +39,7 @@ class LoginForm extends Component {
   handleSubmit = event => {
     const { email, password } = this.state;
     this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, password)
+      .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
@@ -48,30 +51,49 @@ class LoginForm extends Component {
   };
 
   render() {
+    const { email, password, error } = this.state;
+    const isInvalid = password === "" || email === "";
+
     return (
       <div className="login">
         <div className="image">
           <img src={logo} alt="Logo" />
         </div>
         <form onSubmit={this.handleSubmit}>
-          <TextField name="email" label="Email" onChange={this.handleChange} />
+          <TextField
+            name="email"
+            placeholder="Email"
+            onChange={this.handleChange}
+            style={{ backgroundColor: "#e3e6e8" }}
+          />
           <TextField
             type="password"
             name="password"
-            label="Password"
+            placeholder="Password"
             onChange={this.handleChange}
+            style={{ backgroundColor: "#e3e6e8" }}
           />
-          <button className="button" variant="contained" type="submit">
+          <button
+            className="button"
+            variant="contained"
+            type="submit"
+            disabled={isInvalid}
+          >
             Login
           </button>
 
-          {/* {error && <p>{error.message}</p>} */}
+          {error && <p>{error.message}</p>}
         </form>
+        <button
+          style={{ border: "none", background: "none", marginTop: "50px" }}
+        >
+          <Link to={ROUTES.SIGN_UP}>Register now</Link>
+        </button>
       </div>
     );
   }
 }
 
-const LoginFormBase = withFirebase(LoginForm);
+const LoginFormBase = compose(withRouter, withFirebase)(LoginForm);
 
 export default Login;

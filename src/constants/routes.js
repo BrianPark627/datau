@@ -1,4 +1,4 @@
-export const SIGN_UP = "/signup";
-export const SIGN_IN = "/signin";
+export const SIGN_UP = "/Registration";
+export const SIGN_IN = "/Login";
 export const HOME = "/";
 export const PASSWORD_FORGET = "/forget";

@@ -11,13 +11,10 @@ import Firebase, { FirebaseContext } from "./Components/Firebase";
 
 const App = () => (
   <Router>
-    <div>
-      <Navigation />
-      <Route exact path={ROUTES.HOME} component={Home} />
-      <Route path={ROUTES.SIGN_UP} component={Registration} />
-      <Route path={ROUTES.SIGN_IN} component={Login} />
-      <Route path={ROUTES.PASSWORD_FORGET} component={ResetPassword} />
-    </div>
+    <Route exact path={ROUTES.HOME} component={Home} />
+    <Route path={ROUTES.SIGN_UP} component={Registration} />
+    <Route path={ROUTES.SIGN_IN} component={Login} />
+    <Route path={ROUTES.PASSWORD_FORGET} component={ResetPassword} />
   </Router>
 );
 
