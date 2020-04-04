@@ -9,6 +9,7 @@ div#root {
   border: 0px;
   margin: 0;
   padding: 0;
+  background-color: #e3e6e8;
 }
 
 .makeStyles-root-1 {
@@ -60,12 +61,6 @@ div#root {
   overflow-y: true;
 }
 
-.image {
-  text-align: center;
-  margin-top: 50px;
-  margin-bottom: 50px;
-}
-
 .img {
   max-width: 50%;
   height: auto;
@@ -86,9 +81,35 @@ img:hover {
   height: 100px;
 }
 
-.button {
-  top: 20px;
+.image {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  /* background-color: #76838d; */
 }
+
+.login-container {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 60%;
+  width: 20%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.button {
+  color: white;
+  top: 20px;
+  margin-top: 20px;
+  width: 100%;
+  height: 40px;
+  background-color: #52c8fa;
+  border: none;
+  border-radius: 10px;
+}
+
 /* #00458b
 #99ddff
 #3fd2c7 */
