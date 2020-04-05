@@ -1,65 +1,112 @@
 import React, { Component } from "react";
 import MaterialTable from "material-table";
-import Button from "@material-ui/core/Button";
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import { forwardRef } from "react";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Checkbox,
+} from "@material-ui/core";
+import { Delete, Edit } from "@material-ui/icons";
 
 class Question extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns: {}
+      dialogOpen: false,
+      checked: false,
+      data: {},
     };
   }
+
+  handleClickOpen = () => {
+    this.setState({ dialogOpen: true });
+  };
+
+  handleClose = () => {
+    this.setState({ dialogOpen: false });
+  };
+
   render() {
     return (
       <div className="questions">
-        <Button>New</Button>
+        <Button
+          style={{ backgroundColor: "white" }}
+          onClick={this.handleClickOpen}
+        >
+          ADD
+        </Button>
+        <Dialog
+          open={this.state.dialogOpen}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Add new question</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Question"
+              type="email"
+              fullWidth
+            />
+            <Checkbox
+              onChange={(event) => {
+                this.setState({ checked: !event.target.checked });
+                console.log(this.state.checked);
+              }}
+            ></Checkbox>
+            <label for="myinput" class="indented-checkbox-text">
+              Public
+            </label>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleClose} color="primary">
+              Add
+            </Button>
+          </DialogActions>
+        </Dialog>
         <div style={{ maxWidth: "100%", marginTop: "30px" }}>
           <MaterialTable
             options={{
+              actionsColumnIndex: -1,
               paging: false,
               search: false,
               showTitle: false,
-              minBodyHeight: "500px",
-              showSelectAllCheckbox: true,
               draggable: false,
-              selection: true,
+              toolbar: false,
               header: false,
-              headerStyle: { padding: "10px" },
-              toolbar: false
-              // padding: "100px"
             }}
-            columns={[
-              { title: "Adı", field: "name" },
-              { title: "Soyadı", field: "surname" },
-              { title: "Doğum Yılı", field: "birthYear", type: "numeric" },
-              {
-                title: "Doğum Yeri",
-                field: "birthCity",
-                lookup: { 34: "İstanbul", 63: "Şanlıurfa" }
-              }
-            ]}
+            columns={[{ title: "Question", field: "question" }]}
             data={[
               {
-                name: "question 1",
-                surname: "Baran",
-                birthYear: 1987,
-                birthCity: 63
+                name: "1",
+                question: "Did I drink water today?",
               },
               {
-                name: "question 2",
-                surname: "Baran",
-                birthYear: 1987,
-                birthCity: 63
-              }
+                question: "Did I exercise today?",
+              },
             ]}
-            icons={{
-              SortArrow: forwardRef((props, ref) => (
-                <ArrowDownward {...props} ref={ref} />
-              ))
-            }}
-            title="TITLE"
+            actions={[
+              {
+                icon: () => <Edit />,
+                tooltip: "Edit Question",
+                onClick: (event, rowData) => alert("You saved " + rowData.name),
+              },
+              (rowData) => ({
+                icon: () => <Delete />,
+                tooltip: "Delete Question",
+                onClick: (event, rowData) =>
+                  console.log("You want to delete " + rowData.name),
+                disabled: rowData.birthYear < 2000,
+              }),
+            ]}
           />
         </div>
       </div>

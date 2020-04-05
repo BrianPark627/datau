@@ -5,16 +5,16 @@ import Grid from "@material-ui/core/Grid";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flex: 1
+    flex: 1,
   },
   paper: {
     height: "100%",
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
-  }
+    color: theme.palette.text.secondary,
+  },
 }));
 
 export default function Dashboard() {
@@ -38,13 +38,13 @@ export default function Dashboard() {
               // constructorType="stockChart"
               options={{
                 title: {
-                  text: "My chart"
+                  text: "My chart",
                 },
                 series: [
                   {
-                    data: [1, 2, 3]
-                  }
-                ]
+                    data: [1, 2, 3],
+                  },
+                ],
               }}
             />
           </Paper>
@@ -55,13 +55,13 @@ export default function Dashboard() {
               highcharts={Highcharts}
               options={{
                 title: {
-                  text: "My chart"
+                  text: "My chart",
                 },
                 series: [
                   {
-                    data: [1, 2, 3]
-                  }
-                ]
+                    data: [1, 2, 3],
+                  },
+                ],
               }}
             />
           </Paper>
@@ -72,13 +72,13 @@ export default function Dashboard() {
               highcharts={Highcharts}
               options={{
                 title: {
-                  text: "My chart"
+                  text: "My chart",
                 },
                 series: [
                   {
-                    data: [1, 2, 3]
-                  }
-                ]
+                    data: [1, 2, 3],
+                  },
+                ],
               }}
             />
           </Paper>

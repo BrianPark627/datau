@@ -9,7 +9,7 @@ const config = {
   storageBucket: process.env.REACT_APP_BUCKET,
   messagingSenderId: process.env.REACT_APP_SENDER_ID,
   appId: process.env.REACT_APP_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 class Firebase {
@@ -27,8 +27,9 @@ class Firebase {
 
   doSignOut = () => this.auth.signOut();
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
-  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
+  doPasswordUpdate = (password) =>
+    this.auth.currentUser.updatePassword(password);
 }
 
 export default Firebase;

@@ -47,8 +47,16 @@ div#root {
   height: 100%;
 }
 
+.MuiTypography-body1 {
+  background-color: #e3e6e8;
+}
 .MuiGrid-root {
   height: 100%;
+}
+
+.MuiDialog-paper {
+  height: 50%;
+  width: 50%;
 }
 
 .wrapper {
