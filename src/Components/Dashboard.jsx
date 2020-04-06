@@ -4,6 +4,8 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { Delete, Edit } from "@material-ui/icons";
+import MaterialTable from "material-table";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +31,45 @@ export default function Dashboard() {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Paper className={classes.paper}>My Questions</Paper>
+          <Paper className={classes.paper}>
+            <MaterialTable
+              options={{
+                actionsColumnIndex: -1,
+                paging: false,
+                search: false,
+                showTitle: false,
+                draggable: false,
+                toolbar: false,
+                header: false,
+              }}
+              columns={[{ title: "Question", field: "question" }, {}]}
+              data={[
+                {
+                  name: "1",
+                  question: "Did I drink water today?",
+                },
+                {
+                  name: "2",
+                  question: "Did I exercise today?",
+                },
+              ]}
+              actions={[
+                {
+                  icon: () => <Edit />,
+                  tooltip: "Edit Question",
+                  onClick: (event, rowData) =>
+                    alert("You saved " + rowData.name),
+                },
+                (rowData) => ({
+                  icon: () => <Delete />,
+                  tooltip: "Delete Question",
+                  onClick: (event, rowData) =>
+                    console.log("You want to delete " + rowData.name),
+                  disabled: rowData.birthYear < 2000,
+                }),
+              ]}
+            />
+          </Paper>
         </Grid>
         <Grid item xs={12} sm={8}>
           <Paper className={classes.paper}>

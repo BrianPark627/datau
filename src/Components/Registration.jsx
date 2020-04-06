@@ -21,7 +21,7 @@ const INITIAL_STATE = {
   email: "",
   password: "",
   passwordConfirm: "",
-  error: null
+  error: null,
 };
 
 class RegistrationForm extends Component {
@@ -31,23 +31,28 @@ class RegistrationForm extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
-    console.log(this.email);
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     const { username, email, password } = this.state;
-    console.log(password);
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, password)
-      .then(authUser => {
+      .then((authUser) => {
+        // Create a user in your Firebase realtime database
+        return this.props.firebase.user(authUser.user.uid).set({
+          username,
+          email,
+        });
+      })
+      .then((authUser) => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
       });
     event.preventDefault();

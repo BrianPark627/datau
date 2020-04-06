@@ -20,7 +20,7 @@ const Login = () => (
 const INITIAL_STATE = {
   email: "",
   password: "",
-  error: null
+  error: null,
 };
 
 class LoginForm extends Component {
@@ -30,13 +30,13 @@ class LoginForm extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     const { email, password } = this.state;
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
@@ -44,7 +44,7 @@ class LoginForm extends Component {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
       });
     event.preventDefault();

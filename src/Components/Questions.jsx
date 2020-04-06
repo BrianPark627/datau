@@ -10,6 +10,7 @@ import {
   Checkbox,
 } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
+import { withFirebase } from "./Firebase";
 
 class Question extends Component {
   constructor(props) {
@@ -18,6 +19,8 @@ class Question extends Component {
       dialogOpen: false,
       checked: false,
       data: {},
+      uid: null,
+      loading: false,
     };
   }
 
@@ -29,7 +32,21 @@ class Question extends Component {
     this.setState({ dialogOpen: false });
   };
 
+  componentDidMount() {
+    this.setState({ loading: true });
+    this.props.firebase.auth
+      .onAuthStateChanged((user) => {
+        if (user) {
+          this.setState({ uid: user.uid });
+        } else {
+          console.log("There is no logged in user");
+        }
+      })
+      .bind(this);
+  }
+
   render() {
+    console.log(this.state.uid);
     return (
       <div className="questions">
         <Button
@@ -56,7 +73,6 @@ class Question extends Component {
             <Checkbox
               onChange={(event) => {
                 this.setState({ checked: !event.target.checked });
-                console.log(this.state.checked);
               }}
             ></Checkbox>
             <label for="myinput" class="indented-checkbox-text">
@@ -83,14 +99,20 @@ class Question extends Component {
               toolbar: false,
               header: false,
             }}
-            columns={[{ title: "Question", field: "question" }]}
+            columns={[
+              { title: "Question", field: "question" },
+              { tite: "Public", field: "public" },
+            ]}
             data={[
               {
                 name: "1",
                 question: "Did I drink water today?",
+                public: "Public",
               },
               {
+                name: "2",
                 question: "Did I exercise today?",
+                public: "Private",
               },
             ]}
             actions={[
@@ -114,7 +136,7 @@ class Question extends Component {
   }
 }
 
-export default Question;
+export default withFirebase(Question);
 
 // import Button from "@material-ui/core/Button";
 // import { Table, Column, HeaderCell, Cell } from "rsuite-table";
