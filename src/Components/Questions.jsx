@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import MaterialTable from "material-table";
+import { Delete, Edit } from "@material-ui/icons";
+import { withFirebase } from "./Firebase";
+import axios from "axios";
 import {
   Button,
   Dialog,
@@ -9,35 +12,120 @@ import {
   TextField,
   Checkbox,
 } from "@material-ui/core";
-import { Delete, Edit } from "@material-ui/icons";
-import { withFirebase } from "./Firebase";
 
 class Question extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      editDialogOpen: false,
       dialogOpen: false,
       checked: false,
-      data: {},
+      editChecked: false,
       uid: null,
-      loading: false,
+      questions: [],
+      question: "",
+      currentQ: {},
     };
   }
+
+  randomString(length, chars) {
+    var result = "";
+    for (var i = length; i > 0; --i)
+      result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+  }
+
+  createData = () => {
+    let data = [];
+    for (var question of this.state.questions) {
+      data.push({
+        name: question.qid,
+        question: question.question,
+        public: question.public === "1" ? "public" : "private",
+      });
+    }
+
+    return data;
+  };
+
+  handleEditOpen = () => {
+    this.setState({ editDialogOpen: true });
+  };
 
   handleClickOpen = () => {
     this.setState({ dialogOpen: true });
   };
 
   handleClose = () => {
+    this.setState({ dialogOpen: false, editDialogOpen: false, checked: false });
+  };
+
+  handleAdd = () => {
+    let qid = this.randomString(
+      20,
+      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    );
+
+    axios
+      .post("http://localhost:4000/questions", {
+        uid: this.state.uid,
+        qid: qid,
+        question: this.state.question,
+        public: this.state.checked ? "1" : "0",
+      })
+      .then((res) => {
+        let q = this.state.questions;
+        q.push({
+          qid: qid,
+          question: this.state.question,
+          public: this.state.checked ? "1" : "0",
+        });
+        this.setState({ question: "", questions: q, checked: false });
+      });
     this.setState({ dialogOpen: false });
   };
 
+  handleEdit = () => {
+    axios
+      .put(`http://localhost:4000/questions/${this.state.currentQ.name}`, {
+        uid: this.state.uid,
+        qid: this.state.currentQ.name,
+        question: this.state.question,
+        public: this.state.editChecked ? "1" : "0",
+      })
+      .then((res) => {
+        let q = this.state.questions;
+        for (var i in q) {
+          if (q[i].qid === this.state.currentQ.name) {
+            q[i].question = this.state.question;
+            q[i].public = this.state.editChecked ? "1" : "0";
+          }
+        }
+        this.setState({
+          questions: q,
+          question: "",
+          currentQ: {},
+          editChecked: false,
+        });
+      });
+    this.setState({ editDialogOpen: false });
+  };
+
+  handleChange = (event) => {
+    this.setState({ question: event.target.value });
+  };
+
   componentDidMount() {
-    this.setState({ loading: true });
     this.props.firebase.auth
       .onAuthStateChanged((user) => {
         if (user) {
           this.setState({ uid: user.uid });
+          axios
+            .get(`http://localhost:4000/questions/${this.state.uid}`)
+            .then((res) => {
+              const questions = res.data;
+              this.setState({ questions: questions });
+            });
         } else {
           console.log("There is no logged in user");
         }
@@ -46,7 +134,7 @@ class Question extends Component {
   }
 
   render() {
-    console.log(this.state.uid);
+    console.log(this.state.editChecked);
     return (
       <div className="questions">
         <Button
@@ -69,10 +157,11 @@ class Question extends Component {
               label="Question"
               type="email"
               fullWidth
+              onChange={this.handleChange}
             />
             <Checkbox
               onChange={(event) => {
-                this.setState({ checked: !event.target.checked });
+                this.setState({ checked: event.target.checked });
               }}
             ></Checkbox>
             <label for="myinput" class="indented-checkbox-text">
@@ -83,8 +172,44 @@ class Question extends Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.handleAdd} color="primary">
               Add
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={this.state.editDialogOpen}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Edit question</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Question"
+              type="email"
+              fullWidth
+              defaultValue={this.state.currentQ.question}
+              onChange={this.handleChange}
+            />
+            <Checkbox
+              defaultChecked={this.state.editChecked}
+              onChange={(event) => {
+                this.setState({ editChecked: event.target.checked });
+              }}
+            ></Checkbox>
+            <label for="myinput" class="indented-checkbox-text">
+              Public
+            </label>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleEdit} color="primary">
+              Submit
             </Button>
           </DialogActions>
         </Dialog>
@@ -103,30 +228,33 @@ class Question extends Component {
               { title: "Question", field: "question" },
               { tite: "Public", field: "public" },
             ]}
-            data={[
-              {
-                name: "1",
-                question: "Did I drink water today?",
-                public: "Public",
-              },
-              {
-                name: "2",
-                question: "Did I exercise today?",
-                public: "Private",
-              },
-            ]}
+            data={this.createData()}
             actions={[
-              {
+              (rowData) => ({
                 icon: () => <Edit />,
                 tooltip: "Edit Question",
-                onClick: (event, rowData) => alert("You saved " + rowData.name),
-              },
+                onClick: (event, rowData) => {
+                  console.log(rowData);
+                  this.setState({
+                    editChecked: rowData.public === "public" ? true : false,
+                    currentQ: rowData,
+                    editDialogOpen: true,
+                  });
+                },
+              }),
               (rowData) => ({
                 icon: () => <Delete />,
                 tooltip: "Delete Question",
                 onClick: (event, rowData) =>
-                  console.log("You want to delete " + rowData.name),
-                disabled: rowData.birthYear < 2000,
+                  axios
+                    .delete(`http://localhost:4000/questions/${rowData.name}`)
+                    .then((res) => {
+                      let q = this.state.questions;
+                      q = q.filter((obj) => {
+                        return obj.qid !== rowData.name;
+                      });
+                      this.setState({ questions: q });
+                    }),
               }),
             ]}
           />
@@ -137,156 +265,3 @@ class Question extends Component {
 }
 
 export default withFirebase(Question);
-
-// import Button from "@material-ui/core/Button";
-// import { Table, Column, HeaderCell, Cell } from "rsuite-table";
-// import Element from "./Element";
-// import "../index.css";
-
-// import { withStyles, makeStyles } from "@material-ui/core/styles";
-// import Table from "@material-ui/core/Table";
-// import TableBody from "@material-ui/core/TableBody";
-// import TableCell from "@material-ui/core/TableCell";
-// import TableContainer from "@material-ui/core/TableContainer";
-// import TableHead from "@material-ui/core/TableHead";
-// import TableRow from "@material-ui/core/TableRow";
-// import Paper from "@material-ui/core/Paper";
-
-// const StyledTableCell = withStyles(theme => ({
-//   head: {
-//     backgroundColor: theme.palette.common.black,
-//     color: theme.palette.common.white
-//   },
-//   body: {
-//     fontSize: 14
-//   }
-// }))(TableCell);
-
-// const StyledTableRow = withStyles(theme => ({
-//   root: {
-//     "&:nth-of-type(odd)": {
-//       backgroundColor: theme.palette.background.default
-//     }
-//   }
-// }))(TableRow);
-
-// function createData(name, calories, fat, carbs, protein) {
-//   return { name, calories, fat, carbs, protein };
-// }
-
-// const rows = [
-//   createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-//   createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-//   createData("Eclair", 262, 16.0, 24, 6.0),
-//   createData("Cupcake", 305, 3.7, 67, 4.3),
-//   createData("Gingerbread", 356, 16.0, 49, 3.9)
-// ];
-
-// const useStyles = makeStyles({
-//   table: {
-//     minWidth: 700
-//   }
-// });
-
-// export default function CustomizedTables() {
-//   const classes = useStyles();
-
-//   return (
-//     <TableContainer component={Paper}>
-//       <Table className={classes.table} aria-label="customized table">
-//         <TableHead>
-//           <TableRow>
-//             <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-//             <StyledTableCell align="right">Calories</StyledTableCell>
-//             <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-//             <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-//             <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-//           </TableRow>
-//         </TableHead>
-//         <TableBody>
-//           {rows.map(row => (
-//             <StyledTableRow key={row.name}>
-//               <StyledTableCell component="th" scope="row">
-//                 {row.name}
-//               </StyledTableCell>
-//               <StyledTableCell align="right">{row.calories}</StyledTableCell>
-//               <StyledTableCell align="right">{row.fat}</StyledTableCell>
-//               <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-//               <StyledTableCell align="right">{row.protein}</StyledTableCell>
-//             </StyledTableRow>
-//           ))}
-//         </TableBody>
-//       </Table>
-//     </TableContainer>
-//   );
-// }
-
-// class Questions extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       data: [
-//         {
-//           id: 1,
-//           question: "Question1",
-//           firstname: "Test"
-//         }
-//       ]
-//     };
-//   }
-
-//   renderRows() {
-//     return this.state.questions.map(question => (
-//       <tr key={question}>
-//         <td>{question}</td>
-//       </tr>
-//     ));
-//   }
-
-//   render() {
-//     return (
-//       <div className="questions">
-//         <div className="tab-title">My Questions</div>
-//         <Button>Add Question</Button>
-//         <div>
-//           <Table
-//             height={"10%"}
-//             data={this.state.data}
-//             onRowClick={data => {
-//               console.log(data);
-//             }}
-//           >
-//             <Column width={"10"} align="left" fixed>
-//               <HeaderCell>Id</HeaderCell>
-//               <Cell dataKey="id" />
-//             </Column>
-
-//             <Column width={"10"} fixed>
-//               <HeaderCell>Q</HeaderCell>
-//               <Cell dataKey="firstName" />
-//             </Column>
-//             <Column width={"10"} fixed="right">
-//               <HeaderCell>A</HeaderCell>
-
-//               <Cell>
-//                 {rowData => {
-//                   function handleAction() {
-//                     alert(`id:${rowData.id}`);
-//                   }
-//                   return (
-//                     <span>
-//                       <a onClick={handleAction}> Edit </a> |{" "}
-//                       <a onClick={handleAction}> Remove </a>
-//                     </span>
-//                   );
-//                 }}
-//               </Cell>
-//             </Column>
-//           </Table>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-// export default Questions;

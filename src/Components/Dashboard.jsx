@@ -6,6 +6,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Delete, Edit } from "@material-ui/icons";
 import MaterialTable from "material-table";
+import { withFirebase } from "./Firebase";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
+function Dashboard() {
   const classes = useStyles();
 
   return (
@@ -133,3 +134,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default withFirebase(Dashboard);
