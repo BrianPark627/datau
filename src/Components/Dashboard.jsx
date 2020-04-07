@@ -6,7 +6,6 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Delete, Edit } from "@material-ui/icons";
 import MaterialTable from "material-table";
-import { withFirebase } from "./Firebase";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,15 +19,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Dashboard() {
+function Dashboard(props) {
   const classes = useStyles();
 
+  console.log(props);
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <div>Good Evening, Brian</div>
+            <div>{`Good Evening, ${props.name}`}</div>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -51,7 +51,7 @@ function Dashboard() {
                 },
                 {
                   name: "2",
-                  question: "Did I exercise today?",
+                  question: "giggity",
                 },
               ]}
               actions={[
@@ -135,4 +135,4 @@ function Dashboard() {
   );
 }
 
-export default withFirebase(Dashboard);
+export default Dashboard;

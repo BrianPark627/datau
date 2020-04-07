@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -16,6 +16,7 @@ import chart_button from "../assets/chart-line-variant.png";
 import friend_button from "../assets/account-multiple.png";
 import { AuthUserContext, withAuthorization } from "./Session";
 import SignOutButton from "./SignOutButton";
+import { withFirebase } from "./Firebase";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,9 +66,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function VerticalTabs() {
+function Home(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(1);
+  const [uid, setUid] = React.useState();
+  const [name, setName] = React.useState();
+
+  useEffect(() => {
+    props.firebase.auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user);
+        setName(user.displayName);
+        setUid(user.uid);
+      } else {
+        console.log("There is no logged in user");
+      }
+    });
+  });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -174,10 +189,10 @@ function VerticalTabs() {
             <SignOutButton></SignOutButton>
           </Tabs>
           <TabPanel value={value} index={1}>
-            <Dashboard />
+            <Dashboard uid={uid} name={name} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Questions />
+            <Questions uid={uid} />
           </TabPanel>
           <TabPanel value={value} index={3}>
             My Statistics
@@ -195,4 +210,4 @@ function VerticalTabs() {
 }
 
 const condition = (authuser) => !!authuser;
-export default withAuthorization(condition)(VerticalTabs);
+export default withFirebase(withAuthorization(condition)(Home));

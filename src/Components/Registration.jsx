@@ -40,8 +40,9 @@ class RegistrationForm extends Component {
   handleSubmit = (event) => {
     const { username, email, password } = this.state;
     this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, password)
+      .doCreateUserWithEmailAndPassword(email, password, username)
       .then((authUser) => {
+        console.log(authUser);
         // Create a user in your Firebase realtime database
         return this.props.firebase.user(authUser.user.uid).set({
           username,
@@ -53,6 +54,7 @@ class RegistrationForm extends Component {
         this.props.history.push(ROUTES.HOME);
       })
       .catch((error) => {
+        console.log(error);
         this.setState({ error });
       });
     event.preventDefault();

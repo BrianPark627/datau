@@ -21,8 +21,18 @@ class Firebase {
     this.db = app.database();
   }
 
-  doCreateUserWithEmailAndPassword = (email, password) =>
-    this.auth.createUserWithEmailAndPassword(email, password);
+  doCreateUserWithEmailAndPassword = (email, password, name) =>
+    this.auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        result.user.updateProfile({
+          displayName: name,
+        });
+        return result;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);

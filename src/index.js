@@ -1,8 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "./index.css";
-import * as ROUTES from "./constants/routes";
 import Firebase, { FirebaseContext } from "./Components/Firebase";
 import App from "./Components/App";
 

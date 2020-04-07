@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import MaterialTable from "material-table";
 import { Delete, Edit } from "@material-ui/icons";
-import { withFirebase } from "./Firebase";
 import axios from "axios";
 import {
   Button,
@@ -21,7 +20,6 @@ class Question extends Component {
       dialogOpen: false,
       checked: false,
       editChecked: false,
-      uid: null,
       questions: [],
       question: "",
       currentQ: {},
@@ -68,7 +66,7 @@ class Question extends Component {
 
     axios
       .post("http://localhost:4000/questions", {
-        uid: this.state.uid,
+        uid: this.props.uid,
         qid: qid,
         question: this.state.question,
         public: this.state.checked ? "1" : "0",
@@ -88,7 +86,7 @@ class Question extends Component {
   handleEdit = () => {
     axios
       .put(`http://localhost:4000/questions/${this.state.currentQ.name}`, {
-        uid: this.state.uid,
+        uid: this.props.uid,
         qid: this.state.currentQ.name,
         question: this.state.question,
         public: this.state.editChecked ? "1" : "0",
@@ -116,21 +114,12 @@ class Question extends Component {
   };
 
   componentDidMount() {
-    this.props.firebase.auth
-      .onAuthStateChanged((user) => {
-        if (user) {
-          this.setState({ uid: user.uid });
-          axios
-            .get(`http://localhost:4000/questions/${this.state.uid}`)
-            .then((res) => {
-              const questions = res.data;
-              this.setState({ questions: questions });
-            });
-        } else {
-          console.log("There is no logged in user");
-        }
-      })
-      .bind(this);
+    axios
+      .get(`http://localhost:4000/questions/${this.props.uid}`)
+      .then((res) => {
+        const questions = res.data;
+        this.setState({ questions: questions });
+      });
   }
 
   render() {
@@ -264,4 +253,4 @@ class Question extends Component {
   }
 }
 
-export default withFirebase(Question);
+export default Question;
