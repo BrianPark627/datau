@@ -28,6 +28,7 @@ class Firebase {
         result.user.updateProfile({
           displayName: name,
         });
+        console.log("done");
         return result;
       })
       .catch((error) => {

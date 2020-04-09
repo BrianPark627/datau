@@ -118,6 +118,19 @@ img:hover {
   border-radius: 10px;
 }
 
+.react-calendar-heatmap .color-scale-1 {
+  fill: #d6e685;
+}
+.react-calendar-heatmap .color-scale-2 {
+  fill: #8cc665;
+}
+.react-calendar-heatmap .color-scale-3 {
+  fill: #44a340;
+}
+.react-calendar-heatmap .color-scale-4 {
+  fill: #1e6823;
+}
+
 /* #00458b
 #99ddff
 #3fd2c7 */

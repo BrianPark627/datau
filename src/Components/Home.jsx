@@ -17,6 +17,8 @@ import friend_button from "../assets/account-multiple.png";
 import { AuthUserContext, withAuthorization } from "./Session";
 import SignOutButton from "./SignOutButton";
 import { withFirebase } from "./Firebase";
+import Statistics from "./Statistics";
+import Friends from "./Friends";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -73,16 +75,17 @@ function Home(props) {
   const [name, setName] = React.useState();
 
   useEffect(() => {
+    console.log(name);
+    console.log(uid);
     props.firebase.auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
         setName(user.displayName);
         setUid(user.uid);
       } else {
         console.log("There is no logged in user");
       }
     });
-  });
+  }, [name, uid]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -195,10 +198,10 @@ function Home(props) {
             <Questions uid={uid} />
           </TabPanel>
           <TabPanel value={value} index={3}>
-            My Statistics
+            <Statistics />
           </TabPanel>
           <TabPanel value={value} index={4}>
-            Friends
+            <Friends />
           </TabPanel>
           <TabPanel value={value} index={5}>
             Account Settings
