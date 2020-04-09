@@ -7,8 +7,8 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Chart from "./Chart";
-import { Pie } from "react-chartjs-2";
-import { FormLabel } from "@material-ui/core";
+import { useEffect } from "react";
+import axios from "axios";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,34 +48,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ScrollableTabsButtonAuto() {
+export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
-  // create pie charts first one representing percentage of days you say yes for a datasets Week,
-  // second is for a datasetsMonth, third is for a year
-  const labels = ["YES", "NO"];
-  const datasetsWeek = [
-    {
-      data: [80, 20],
-      backgroundColor: ["green", "red"],
-    },
-  ];
-  const datasetsMonth = [
-    {
-      data: [40, 60],
-      backgroundColor: ["green", "red"],
-    },
-  ];
-  const datasetsYear = [
-    {
-      data: [30, 70],
-      backgroundColor: ["green", "red"],
-    },
-  ];
 
   const [value, setValue] = React.useState(0);
+  const [questions, setQuestions] = React.useState([]);
+
+  useEffect(() => {
+    if (props.uid) {
+      axios.get(`http://localhost:4000/questions/${props.uid}`).then((res) => {
+        const q = res.data;
+        setQuestions(q);
+      });
+    }
+  }, [props]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const buildTabs = () => {
+    let size = questions.length;
+    let tabs = [];
+    for (let i = 1; i <= size; i++) {
+      tabs.push(
+        <Tab label={`${questions[i - 1].question}`} {...a11yProps(i - 1)} />
+      );
+    }
+    return tabs;
+  };
+
+  const buildTabPanels = () => {
+    let size = questions.length;
+    let tabPanels = [];
+    for (let i = 1; i <= size; i++) {
+      tabPanels.push(
+        <TabPanel value={value} index={i - 1}>
+          <Chart question={questions[i - 1]} />
+        </TabPanel>
+      );
+    }
+    return tabPanels;
   };
 
   return (
@@ -90,41 +103,10 @@ export default function ScrollableTabsButtonAuto() {
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
         >
-          <Tab label="Question One" {...a11yProps(0)} />
-          <Tab label="Question Two" {...a11yProps(1)} />
-          <Tab label="Question Three" {...a11yProps(2)} />
-          <Tab label="Question Four" {...a11yProps(3)} />
-          <Tab label="Question Five" {...a11yProps(4)} />
-          <Tab label="Question Six" {...a11yProps(5)} />
-          <Tab label="Question Seven" {...a11yProps(6)} />
+          {buildTabs()}
         </Tabs>
       </AppBar>
-
-      <TabPanel value={value} index={0}>
-        {/* user inputted question  */}
-        <Chart />
-      </TabPanel>
-      {/* Question Two pie charts */}
-      <TabPanel value={value} index={1}>
-        <Chart />
-      </TabPanel>
-      {/* Question Three pie charts */}
-      <TabPanel value={value} index={2}>
-        <Chart />
-      </TabPanel>
-      {/* Question four pie charts */}
-      <TabPanel value={value} index={3}>
-        <Chart />
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        <Chart />
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        <Chart />
-      </TabPanel>
-      {/* <TabPanel value={value} index={6}>
-        Item Seven
-      </TabPanel> */}
+      {buildTabPanels()}
     </div>
   );
 }

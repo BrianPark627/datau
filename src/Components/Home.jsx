@@ -14,6 +14,7 @@ import settings_button from "../assets/cog-outline.png";
 import dashboard_button from "../assets/view-dashboard-variant.png";
 import chart_button from "../assets/chart-line-variant.png";
 import friend_button from "../assets/account-multiple.png";
+import logout_button from "../assets/exit-to-app.png";
 import { AuthUserContext, withAuthorization } from "./Session";
 import SignOutButton from "./SignOutButton";
 import { withFirebase } from "./Firebase";
@@ -75,8 +76,6 @@ function Home(props) {
   const [name, setName] = React.useState();
 
   useEffect(() => {
-    console.log(name);
-    console.log(uid);
     props.firebase.auth.onAuthStateChanged((user) => {
       if (user) {
         setName(user.displayName);
@@ -189,7 +188,22 @@ function Home(props) {
               }
               {...a11yProps(5)}
             />
-            <SignOutButton></SignOutButton>
+            <Tab
+              label={
+                <div style={{ display: "flex", width: "100%" }}>
+                  <div
+                    style={{
+                      marginLeft: "20%",
+                      marginRight: "5px",
+                    }}
+                  >
+                    <img src={logout_button} alt="Logout_Button" />
+                  </div>
+                  <div>Sign Out</div>
+                </div>
+              }
+              {...a11yProps(6)}
+            />
           </Tabs>
           <TabPanel value={value} index={1}>
             <Dashboard uid={uid} name={name} />
@@ -198,13 +212,16 @@ function Home(props) {
             <Questions uid={uid} />
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <Statistics />
+            <Statistics uid={uid} />
           </TabPanel>
           <TabPanel value={value} index={4}>
             <Friends />
           </TabPanel>
           <TabPanel value={value} index={5}>
             Account Settings
+          </TabPanel>
+          <TabPanel value={value} index={6}>
+            <SignOutButton />
           </TabPanel>
         </div>
       )}
