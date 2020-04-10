@@ -20,6 +20,7 @@ import SignOutButton from "./SignOutButton";
 import { withFirebase } from "./Firebase";
 import Statistics from "./Statistics";
 import Friends from "./Friends";
+import Account from "./Account";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -218,7 +219,7 @@ function Home(props) {
             <Friends />
           </TabPanel>
           <TabPanel value={value} index={5}>
-            Account Settings
+            <Account />
           </TabPanel>
           <TabPanel value={value} index={6}>
             <SignOutButton />
