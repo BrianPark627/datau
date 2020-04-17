@@ -56,10 +56,12 @@ export default function ScrollableTabsButtonAuto(props) {
 
   useEffect(() => {
     if (props.uid) {
-      axios.get(`http://localhost:4000/questions/${props.uid}`).then((res) => {
-        const q = res.data;
-        setQuestions(q);
-      });
+      axios
+        .get(`http://${process.env.REACT_APP_URL}:4000/questions/${props.uid}`)
+        .then((res) => {
+          const q = res.data;
+          setQuestions(q);
+        });
     }
   }, [props]);
 

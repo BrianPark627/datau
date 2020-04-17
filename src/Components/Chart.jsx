@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import { Pie } from "react-chartjs-2";
 import { FormLabel } from "@material-ui/core";
 import axios from "axios";
-import { BugReportTwoTone } from "@material-ui/icons";
 
 // Variables for pie chart data
 const labels = ["YES", "NO"];
@@ -34,7 +31,7 @@ class Chart extends Component {
       begin = new Date([year, month, day].join("-"));
       axios
         .post(
-          `http://localhost:4000/answers/question/${this.props.question.qid}`,
+          `http://${process.env.REACT_APP_URL}:4000/answers/question/${this.props.question.qid}`,
           {
             begin: begin,
             end: end,
@@ -58,7 +55,7 @@ class Chart extends Component {
           begin = new Date([year, month, day].join("-"));
           axios
             .post(
-              `http://localhost:4000/answers/question/${this.props.question.qid}`,
+              `http://${process.env.REACT_APP_URL}:4000/answers/question/${this.props.question.qid}`,
               {
                 begin: begin,
                 end: end,
@@ -85,7 +82,7 @@ class Chart extends Component {
           begin = new Date([year, month, day].join("-"));
           axios
             .post(
-              `http://localhost:4000/answers/question/${this.props.question.qid}`,
+              `http://${process.env.REACT_APP_URL}:4000/answers/question/${this.props.question.qid}`,
               {
                 begin: begin,
                 end: end,

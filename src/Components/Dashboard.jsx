@@ -1,37 +1,11 @@
 import React, { useEffect } from "react";
 import { Paper, Grid, makeStyles, Button } from "@material-ui/core";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
 import MaterialTable from "material-table";
 import axios from "axios";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Radar } from "react-chartjs-2";
 import "react-calendar-heatmap/dist/styles.css";
 import "../index.css";
-
-// const chartData = {
-//   labels: [
-//     "Eating",
-//     "Drinking",
-//     "Sleeping",
-//     "Designing",
-//     "Coding",
-//     "Cycling",
-//     "Running",
-//   ],
-//   datasets: [
-//     {
-//       label: "Year to date",
-//       backgroundColor: "rgba(179,181,198,0.2)",
-//       borderColor: "rgba(179,181,198,1)",
-//       pointBackgroundColor: "rgba(179,181,198,1)",
-//       pointBorderColor: "#fff",
-//       pointHoverBackgroundColor: "#fff",
-//       pointHoverBorderColor: "rgba(179,181,198,1)",
-//       data: [65, 59, 90, 81, 56, 55, 40],
-//     },
-//   ],
-// };
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,27 +33,35 @@ function Dashboard(props) {
   useEffect(() => {
     if (props.uid) {
       axios
-        .get(`http://localhost:4000/questions/unanswered/${props.uid}`)
+        .get(
+          `http://${process.env.REACT_APP_URL}:4000/questions/unanswered/${props.uid}`
+        )
         .then((res) => {
           const q = res.data;
           setQuestions(q);
         })
         .then(() => {
           axios
-            .post(`http://localhost:4000/answers/${props.uid}`, {
-              begin: beginDate,
-              end: endDate,
-            })
+            .post(
+              `http://${process.env.REACT_APP_URL}:4000/answers/${props.uid}`,
+              {
+                begin: beginDate,
+                end: endDate,
+              }
+            )
             .then((res) => {
               setHeatmapData(res.data);
             });
         })
         .then(() => {
           axios
-            .post(`http://localhost:4000/answers/total/${props.uid}`, {
-              begin: beginDate,
-              end: endDate,
-            })
+            .post(
+              `http://${process.env.REACT_APP_URL}:4000/answers/total/${props.uid}`,
+              {
+                begin: beginDate,
+                end: endDate,
+              }
+            )
             .then((res) => {
               setChartData(res.data);
             });
@@ -103,16 +85,6 @@ function Dashboard(props) {
     return data;
   };
 
-  //     {
-  //       label: "Year to date",
-  //       backgroundColor: "rgba(179,181,198,0.2)",
-  //       borderColor: "rgba(179,181,198,1)",
-  //       pointBackgroundColor: "rgba(179,181,198,1)",
-  //       pointBorderColor: "#fff",
-  //       pointHoverBackgroundColor: "#fff",
-  //       pointHoverBorderColor: "rgba(179,181,198,1)",
-  //       data: [65, 59, 90, 81, 56, 55, 40],
-  //     },
   const createRadar = () => {
     let Labels = chartData.map((a) => a.question);
     let datasets = [
@@ -130,7 +102,6 @@ function Dashboard(props) {
 
     return { labels: Labels, datasets: datasets };
   };
-  console.log(chartData);
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
@@ -167,7 +138,7 @@ function Dashboard(props) {
               onClick={() => {
                 let selectedQuestions = selected.map((a) => a.name);
                 axios
-                  .post("http://localhost:4000/answers", {
+                  .post(`http://${process.env.REACT_APP_URL}:4000/answers`, {
                     qid: selectedQuestions,
                   })
                   .then((res) => {
@@ -199,29 +170,6 @@ function Dashboard(props) {
             />
           </Paper>
         </Grid>
-        {/* <Grid item xs={12} sm={6}>
-          <Paper className={classes.paper}>
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={{
-                title: {
-                  text: "My chart",
-                },
-                series: [
-                  {
-                    data: [1, 2, 3],
-                  },
-                ],
-              }}
-            />
-          </Paper>
-        </Grid> */}
-        {/* <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>xs=6 sm=3</Paper>
-        </Grid>
-        <Grid item xs={6} sm={3}>
-          <Paper className={classes.paper}>xs=6 sm=3</Paper>
-        </Grid> */}
       </Grid>
     </div>
   );

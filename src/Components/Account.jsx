@@ -4,7 +4,6 @@ import TextField from "@material-ui/core/TextField";
 // import account_picture from "../assets/baseline_account_black_box_18dp.png";
 // import help_button from "../assets/help-circle-outline.png";
 import "../index.css";
-import { forwardRef } from "react";
 
 class Account extends Component {
   constructor(props) {

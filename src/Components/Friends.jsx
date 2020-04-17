@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { render } from "react-dom";
+import React from "react";
 import FriendAppBar from "./FriendsLayout/FriendAppBar";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -9,7 +8,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-// import bp from "../assets/bp.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {

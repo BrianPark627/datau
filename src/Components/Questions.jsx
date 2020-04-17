@@ -65,7 +65,7 @@ class Question extends Component {
     );
 
     axios
-      .post("http://localhost:4000/questions", {
+      .post(`http://${process.env.REACT_APP_URL}:4000/questions`, {
         uid: this.props.uid,
         qid: qid,
         question: this.state.question,
@@ -85,12 +85,15 @@ class Question extends Component {
 
   handleEdit = () => {
     axios
-      .put(`http://localhost:4000/questions/${this.state.currentQ.name}`, {
-        uid: this.props.uid,
-        qid: this.state.currentQ.name,
-        question: this.state.question,
-        public: this.state.editChecked ? "1" : "0",
-      })
+      .put(
+        `http://${process.env.REACT_APP_URL}:4000/questions/${this.state.currentQ.name}`,
+        {
+          uid: this.props.uid,
+          qid: this.state.currentQ.name,
+          question: this.state.question,
+          public: this.state.editChecked ? "1" : "0",
+        }
+      )
       .then((res) => {
         let q = this.state.questions;
         for (var i in q) {
@@ -115,7 +118,9 @@ class Question extends Component {
 
   componentDidMount() {
     axios
-      .get(`http://localhost:4000/questions/${this.props.uid}`)
+      .get(
+        `http://${process.env.REACT_APP_URL}:4000/questions/${this.props.uid}`
+      )
       .then((res) => {
         const questions = res.data;
         this.setState({ questions: questions });
@@ -236,7 +241,9 @@ class Question extends Component {
                 tooltip: "Delete Question",
                 onClick: (event, rowData) =>
                   axios
-                    .delete(`http://localhost:4000/questions/${rowData.name}`)
+                    .delete(
+                      `http://${process.env.REACT_APP_URL}:4000/questions/${rowData.name}`
+                    )
                     .then((res) => {
                       let q = this.state.questions;
                       q = q.filter((obj) => {

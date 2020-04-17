@@ -85,7 +85,6 @@ export default function PrimarySearchAppBar() {
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const setSearchList = React.useState(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleMobileMenuClose = () => {
