@@ -3761,6 +3761,29 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
+chart.js@^2.9.3:
+  version "2.9.4"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.4.tgz#0827f9563faffb2dc5c06562f8eb10337d5b9684"
+  integrity sha512-B07aAzxcrikjAPyV+01j7BmOpxtQETxTSlQ26BEYJ+3iUkbNKaOJ/nDbT6JjyqYxseM0ON12COHYdU2cTIjC7A==
+  dependencies:
+    chartjs-color "^2.1.0"
+    moment "^2.10.2"
+
+chartjs-color-string@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/chartjs-color-string/-/chartjs-color-string-0.6.0.tgz#1df096621c0e70720a64f4135ea171d051402f71"
+  integrity sha512-TIB5OKn1hPJvO7JcteW4WY/63v6KwEdt6udfnDE9iCAZgy+V4SrbSxoIbTw/xkUIapjEI4ExGtD0+6D3KyFd7A==
+  dependencies:
+    color-name "^1.0.0"
+
+chartjs-color@^2.1.0:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/chartjs-color/-/chartjs-color-2.4.1.tgz#6118bba202fe1ea79dd7f7c0f9da93467296c3b0"
+  integrity sha512-haqOg1+Yebys/Ts/9bLo/BqUcONQOdr/hoEr2LLTRl6C5LXctUdHxsCYfvQVg5JIxITrfCNUDr4ntqmQk9+/0w==
+  dependencies:
+    chartjs-color-string "^0.6.0"
+    color-convert "^1.9.3"
+
 chokidar@^2.0.2, chokidar@^2.1.8:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.1.8.tgz#804b3a7b6a99358c3c5c61e71d8728f041cff917"
@@ -3938,7 +3961,7 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
-color-convert@^1.9.0, color-convert@^1.9.1:
+color-convert@^1.9.0, color-convert@^1.9.1, color-convert@^1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
   integrity sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==
@@ -6226,10 +6249,10 @@ highcharts-react-official@^3.0.0:
   resolved "https://registry.yarnpkg.com/highcharts-react-official/-/highcharts-react-official-3.0.0.tgz#f2e81ed59d299c3473a0dd5ba5df24028875226a"
   integrity sha512-VefJgDY2hkT9gfppsQGrRF2g5u8d9dtfHGcx2/xqiP+PkZXCqalw9xOeKVCRvJKTOh0coiDFwvVjOvB7KaGl4A==
 
-highcharts@^8.0.3:
-  version "8.0.4"
-  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-8.0.4.tgz#a717434012bd5f9b82b94b737d62acec501d360c"
-  integrity sha512-RD86/w7VNwuY96c2Pv16dtZujJ4vg5viiVjbFF/TCrvFpmtQRzBIECG90ww0JtiK6+6TKlwCYf0an+kgQshnRw==
+highcharts@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-9.0.0.tgz#2e5d382481f71c50ac7f086e7bdead394fab71d4"
+  integrity sha512-MJCtidFytGSQvsV3OEM+vFTLpjUcp7jmFpLn8h3oL4WKp0gxUOQg6Nw00sqMWGdiadst0gOZO4804zynTcYjZQ==
 
 history@^4.9.0:
   version "4.10.1"
@@ -7922,6 +7945,11 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
+lodash@^4.17.19:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
 loglevel@^1.6.6:
   version "1.6.6"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.6.tgz#0ee6300cc058db6b3551fa1c4bf73b83bb771312"
@@ -8292,6 +8320,11 @@ mkdirp@0.5.1, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
+
+moment@^2.10.2:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -10172,6 +10205,11 @@ randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   dependencies:
     safe-buffer "^5.1.0"
 
+randomcolor@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/randomcolor/-/randomcolor-0.5.4.tgz#df615b13f25b89ea58c5f8f72647f0a6f07adcc3"
+  integrity sha512-nYd4nmTuuwMFzHL6W+UWR5fNERGZeVauho8mrJDUSXdNDbao4rbrUwhuLgKC/j8VCS5+34Ria8CsTDuBjrIrQA==
+
 randomfill@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/randomfill/-/randomfill-1.0.4.tgz#c92196fc86ab42be983f1bf31778224931d61458"
@@ -10238,6 +10276,14 @@ react-calendar-heatmap@^1.8.1:
   dependencies:
     memoize-one "^5.0.0"
     prop-types "^15.6.2"
+
+react-chartjs-2@^2.9.0:
+  version "2.11.2"
+  resolved "https://registry.yarnpkg.com/react-chartjs-2/-/react-chartjs-2-2.11.2.tgz#156c0d2618600561efc23bef278bd48a335cadb6"
+  integrity sha512-hcPS9vmRJeAALPPf0uo02BiD8BDm0HNmneJYTZVR74UKprXOpql+Jy1rVuj93rKw0Jfx77mkcRfXPxTe5K83uw==
+  dependencies:
+    lodash "^4.17.19"
+    prop-types "^15.7.2"
 
 react-dev-utils@^10.2.0:
   version "10.2.1"
